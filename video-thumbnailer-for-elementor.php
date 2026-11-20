@@ -7,7 +7,7 @@
 
  * Plugin URI:  https://www.engageweb.co.uk/web-services/wordpress-plugin-development
 
- * Version:     1.2.8
+ * Version:     1.2.9
 
  * Author:      Engage Web, Nick Arkell
 
