@@ -19,6 +19,10 @@
 
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 
 // Define plugin paths
 

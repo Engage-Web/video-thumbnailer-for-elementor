@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 // Frontend scripts and styles
 
 add_action('wp_enqueue_scripts','vtfe_script');
@@ -7,17 +11,18 @@ add_action( 'elementor/editor/after_enqueue_scripts', 'vtfe_script', 11 );
 add_action( 'admin_enqueue_scripts', 'vtfe_admin_script' );
 
 function vtfe_script() {
-    wp_enqueue_script( 'vtfe_script', VTFE_PLUGINURL.'assets/js/script.js', array(), date('YmdHi', filemtime(plugin_dir_path( __FILE__ ).'../assets/js/script.js')), true);
-	wp_enqueue_style('vtfe_style', VTFE_PLUGINURL.'assets/css/style.css', array(), date('YmdHi', filemtime(plugin_dir_path( __FILE__ ).'../assets/css/style.css')));
+	$script_path = plugin_dir_path( __FILE__ ) . '../assets/js/script.js';
+	$style_path  = plugin_dir_path( __FILE__ ) . '../assets/css/style.css';
+	wp_enqueue_script( 'vtfe_script', VTFE_PLUGINURL . 'assets/js/script.js', array( 'jquery' ), (string) filemtime( $script_path ), true );
+	wp_enqueue_style( 'vtfe_style', VTFE_PLUGINURL . 'assets/css/style.css', array(), (string) filemtime( $style_path ) );
 }
 
 function vtfe_admin_script() {
 	global $pagenow;
-	$settings_page = "";
-	if ($_GET['page']) { $settings_page = $_GET['page']; }
-	if($pagenow == 'options-general.php' && $settings_page == 'vtfe_settings') {
-		wp_enqueue_style('vtfe_bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css', array(), '5.2.3');
-		wp_enqueue_style('vtfe_style', VTFE_PLUGINURL.'assets/css/style.css', array(), date('YmdHi', filemtime(plugin_dir_path( __FILE__ ).'../assets/css/style.css')));
+	$settings_page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
+	if ( 'options-general.php' === $pagenow && 'vtfe_settings' === $settings_page ) {
+		$style_path = plugin_dir_path( __FILE__ ) . '../assets/css/style.css';
+		wp_enqueue_style( 'vtfe_style', VTFE_PLUGINURL . 'assets/css/style.css', array(), (string) filemtime( $style_path ) );
 	}
 }
 
@@ -85,11 +90,11 @@ add_action('elementor/element/before_section_end', function( $section, $section_
 		$section->add_control(
 			'auto_thumbnail' ,
 			[
-				'label' => esc_html__( 'Automatic thumbnail', 'elementor' ),
+				'label' => esc_html__( 'Automatic thumbnail', 'video-thumbnailer-for-elementor' ),
 				'default' => $vtfe_default_on,
 				'type' => \Elementor\Controls_Manager::SWITCHER,
-				'label_off' => esc_html__( 'Off', 'elementor' ),
-				'label_on' => esc_html__( 'On', 'elementor' ),
+				'label_off' => esc_html__( 'Off', 'video-thumbnailer-for-elementor' ),
+				'label_on' => esc_html__( 'On', 'video-thumbnailer-for-elementor' ),
 				'condition' => [
 					'show_image_overlay' => 'yes',
 				],
@@ -99,12 +104,12 @@ add_action('elementor/element/before_section_end', function( $section, $section_
 		$section->add_control(
 			'auto_thumbnail_crop' ,
 			[
-				'label' => esc_html__( 'Automatic thumbnail - crop', 'elementor' ),
+				'label' => esc_html__( 'Automatic thumbnail - crop', 'video-thumbnailer-for-elementor' ),
 				'default' => $vtfe_default_crop_on,
 				'description' => 'This is recommended for videos (often older) with thumbnails other than 16:9 (eg. HD / full HD / 4K) resolution, such as 4:3.',
 				'type' => \Elementor\Controls_Manager::SWITCHER,
-				'label_off' => esc_html__( 'Off', 'elementor' ),
-				'label_on' => esc_html__( 'On', 'elementor' ),
+				'label_off' => esc_html__( 'Off', 'video-thumbnailer-for-elementor' ),
+				'label_on' => esc_html__( 'On', 'video-thumbnailer-for-elementor' ),
 				'condition' => [
 					'auto_thumbnail' => 'yes',
 				],
