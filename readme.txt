@@ -6,7 +6,7 @@ Tags: elementor, vimeo, youtube, video
 
 Requires at least: 5.0
 
-Tested up to: 6.2
+Tested up to: 7.1
 
 Requires PHP: 5.6
 
